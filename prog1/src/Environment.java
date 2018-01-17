@@ -12,8 +12,9 @@ public class Environment {
 		this.home = home;
 	}
 	
-	public void setRoomba(Point2D p) {
-		roomba = p;
+	public void setRoomba(int x, int y) {
+		roomba.x = x;
+		roomba.y = y;
 	}
 	
 	public Point2D getRoomba() {

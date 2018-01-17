@@ -1,8 +1,10 @@
 
 public class States {
 	private Ori ori;
-	States() {
+	private Environment envi;
+	States(Environment envi) {
 		ori = Ori.North;
+		this.envi = envi;
 	}
 	
 	public void Turn_Right() {
@@ -14,6 +16,17 @@ public class States {
 	}
 	
 	public void Go() {
+		Point2D roomba = envi.getRoomba();
+		switch(ori) {
+		case North:
+			envi.setRoomba(roomba.x, roomba.y+1);
+		case East:
+			envi.setRoomba(roomba.x+1, roomba.y);
+		case South:
+			envi.setRoomba(roomba.x, roomba.y-1);
+		case West:
+			envi.setRoomba(roomba.x-1, roomba.y);
+		}
 	}
 	
 	private enum Ori {
