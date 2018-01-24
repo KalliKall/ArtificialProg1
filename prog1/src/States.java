@@ -29,6 +29,13 @@ public class States {
 		}
 	}
 	
+	public void Suck() {
+		Point2D roomba = envi.getRoomba();
+		if(envi.isDirt(roomba)) {
+			envi.removeDirt(roomba);
+		}
+ 	}
+	
 	private enum Ori {
 		North,
 		East,
