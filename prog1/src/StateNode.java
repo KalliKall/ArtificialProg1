@@ -8,13 +8,15 @@ public class StateNode {
 	private int pathCost;
 	private List<StateNode> childs;
 	private StateNode parent;
+	private Status status;
 	
-	StateNode(List<Point2D> dirts, Point2D roomba, StateNode parent, Ori ori, int pathCost) {
+	StateNode(List<Point2D> dirts, Point2D roomba, StateNode parent, Ori ori, int pathCost, Status status) {
 		this.dirts = dirts;
 		this.roomba = roomba;
 		this.parent = parent;
 		this.ori = ori;
 		this.pathCost = pathCost;
+		this.status = status;
 	}
 	
 	public int getPathCost() {
@@ -57,6 +59,14 @@ public class StateNode {
 		childs.add(child);
 	}
 	
+	public Status getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
 	public enum Ori {
 		North,
 		East,
@@ -68,5 +78,13 @@ public class StateNode {
 		public Ori getPrev() {
 			return values()[(ordinal()+3) % values().length];
 		}
+	}
+	
+	public enum Status {
+		Suck,
+		Turn_Left,
+		Turn_Right,
+		Go,
+		Turn_Off;
 	}
 }
