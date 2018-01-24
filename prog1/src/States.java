@@ -8,29 +8,11 @@ public class States {
 	}
 	
 	public void Turn_Right() {
-		switch(ori) {
-		case North:
-			ori = Ori.East;
-		case East:
-			ori = Ori.South;
-		case South:
-			ori = Ori.West;
-		case West:
-			ori = Ori.North;
-		}
+		ori = ori.getNext();
 	}
 	
 	public void Turn_Left() {
-		switch(ori) {
-		case North:
-			ori = Ori.West;
-		case East:
-			ori = Ori.North;
-		case South:
-			ori = Ori.East;
-		case West:
-			ori = Ori.South;
-		}
+		ori = ori.getPrev();
 	}
 	
 	public void Go() {
@@ -52,5 +34,11 @@ public class States {
 		East,
 		South,
 		West;
+		public Ori getNext() {
+			return values()[(ordinal()+1) % values().length];
+		}
+		public Ori getPrev() {
+			return values()[(ordinal()+3) % values().length];
+		}
 	}
 }
