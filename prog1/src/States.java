@@ -17,6 +17,7 @@ public class States {
 		
 		child.setOri(parent.ori.getNext());
 		child.setPathCost(parent.getPathCost()+1);
+		parent.addChild(child);
 		nodes.add(child);
 	}
 	
@@ -31,6 +32,8 @@ public class States {
 		
 		child.setOri(parent.ori.getPrev());
 		child.setPathCost(parent.getPathCost()+1);
+		parent.addChild(child);
+		parent.addChild(child);
 		nodes.add(child);
 	}
 	
@@ -51,13 +54,25 @@ public class States {
 		*/
 	}
 	
-	public void Suck() {
-		/*
-		Point2D roomba = envi.getRoomba();
-		if(envi.isDirt(roomba)) {
-			envi.removeDirt(roomba);
+	public void Suck(List<StateNode> nodes, StateNode parent) {
+		StateNode child = new StateNode(
+				parent.getDirts(),
+				parent.getRoomba(),
+				parent,
+				parent.getOri(),
+				parent.getPathCost()
+				);
+		
+		List<Point2D> temp = parent.getDirts();
+		
+		if(child.isDirt(child.getRoomba())) {
+			temp.remove(child.getRoomba());
 		}
-		*/
+		child.setDirts(temp);
+		child.setPathCost(parent.getPathCost()+1);
+		parent.addChild(child);
+		nodes.add(child);
+			
  	}
 	
 }
