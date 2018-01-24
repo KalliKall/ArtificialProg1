@@ -1,21 +1,41 @@
+import java.util.List;
 
 public class States {
-	private Ori ori;
 	private Environment envi;
 	States(Environment envi) {
-		ori = Ori.North;
 		this.envi = envi;
 	}
 	
-	public void Turn_Right() {
-		ori = ori.getNext();
+	public void Turn_Right(List<StateNode> nodes, StateNode parent) {
+		StateNode child = new StateNode(
+				parent.getDirts(),
+				parent.getRoomba(),
+				parent,
+				parent.getOri(),
+				parent.getPathCost()
+				);
+		
+		child.setOri(parent.ori.getNext());
+		child.setPathCost(parent.getPathCost()+1);
+		nodes.add(child);
 	}
 	
-	public void Turn_Left() {
-		ori = ori.getPrev();
+	public void Turn_Left(List<StateNode> nodes, StateNode parent) {
+		StateNode child = new StateNode(
+				parent.getDirts(),
+				parent.getRoomba(),
+				parent,
+				parent.getOri(),
+				parent.getPathCost()
+				);
+		
+		child.setOri(parent.ori.getPrev());
+		child.setPathCost(parent.getPathCost()+1);
+		nodes.add(child);
 	}
 	
 	public void Go() {
+		/*
 		Point2D roomba = envi.getRoomba();
 		switch(ori) {
 		case North:
@@ -27,25 +47,16 @@ public class States {
 		case West:
 			envi.setRoomba(roomba.x-1, roomba.y);
 		}
+		*/
 	}
 	
 	public void Suck() {
+		/*
 		Point2D roomba = envi.getRoomba();
 		if(envi.isDirt(roomba)) {
 			envi.removeDirt(roomba);
 		}
+		*/
  	}
 	
-	private enum Ori {
-		North,
-		East,
-		South,
-		West;
-		public Ori getNext() {
-			return values()[(ordinal()+1) % values().length];
-		}
-		public Ori getPrev() {
-			return values()[(ordinal()+3) % values().length];
-		}
-	}
 }
