@@ -49,6 +49,10 @@ public class StateNode {
 		return dirts;
 	}
 	
+	public void setDirts(List<Point2D> dirts) {
+		this.dirts = dirts;
+	}
+	
 	public boolean isDirt(Point2D p) {	
 		return dirts.contains(p);
 	}
