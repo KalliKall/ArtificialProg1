@@ -12,7 +12,8 @@ public class States {
 				parent.getRoomba(),
 				parent,
 				parent.getOri(),
-				parent.getPathCost()
+				parent.getPathCost(),
+				parent.getStatus()
 				);
 		
 		child.setOri(parent.ori.getNext());
@@ -27,7 +28,8 @@ public class States {
 				parent.getRoomba(),
 				parent,
 				parent.getOri(),
-				parent.getPathCost()
+				parent.getPathCost(),
+				parent.getStatus()
 				);
 		
 		child.setOri(parent.ori.getPrev());
@@ -60,7 +62,8 @@ public class States {
 				parent.getRoomba(),
 				parent,
 				parent.getOri(),
-				parent.getPathCost()
+				parent.getPathCost(),
+				parent.getStatus()
 				);
 		
 		List<Point2D> temp = parent.getDirts();
