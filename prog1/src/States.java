@@ -7,64 +7,46 @@ public class States {
 	}
 	
 	public void Turn_Right(List<StateNode> nodes, StateNode parent) {
-		StateNode child = new StateNode(
-				parent.getDirts(),
-				parent.getRoomba(),
-				parent,
-				parent.getOri(),
-				parent.getPathCost(),
-				parent.getStatus()
-				);
+		StateNode child = createNode(parent);
 		
 		child.setOri(parent.ori.getNext());
+		child.setStatus(Status.Turn_Right);
 		child.setPathCost(parent.getPathCost()+1);
-		parent.addChild(child);
 		nodes.add(child);
 	}
 	
 	public void Turn_Left(List<StateNode> nodes, StateNode parent) {
-		StateNode child = new StateNode(
-				parent.getDirts(),
-				parent.getRoomba(),
-				parent,
-				parent.getOri(),
-				parent.getPathCost(),
-				parent.getStatus()
-				);
+		StateNode child = createNode(parent);
 		
 		child.setOri(parent.ori.getPrev());
+		child.setStatus(Status.Turn_Left);
 		child.setPathCost(parent.getPathCost()+1);
-		parent.addChild(child);
-		parent.addChild(child);
 		nodes.add(child);
 	}
 	
-	public void Go() {
+	public void Go(List<StateNode> nodes, StateNode parent) {
+		StateNode child = createNode(parent);
 		
-		/*
-		Point2D roomba = envi.getRoomba();
-		switch(ori) {
+		Point2D roomba = parent.getRoomba();
+		switch(child.ori) {
 		case North:
-			envi.setRoomba(roomba.x, roomba.y+1);
+			child.setRoomba(roomba.x, roomba.y+1);
 		case East:
-			envi.setRoomba(roomba.x+1, roomba.y);
+			child.setRoomba(roomba.x+1, roomba.y);
 		case South:
-			envi.setRoomba(roomba.x, roomba.y-1);
+			child.setRoomba(roomba.x, roomba.y-1);
 		case West:
-			envi.setRoomba(roomba.x-1, roomba.y);
+			child.setRoomba(roomba.x-1, roomba.y);
 		}
-		*/
+		
+		child.setStatus(Status.Go);
+		child.setPathCost(parent.getPathCost()+1);
+		nodes.add(child);
+		
 	}
 	
 	public void Suck(List<StateNode> nodes, StateNode parent) {
-		StateNode child = new StateNode(
-				parent.getDirts(),
-				parent.getRoomba(),
-				parent,
-				parent.getOri(),
-				parent.getPathCost(),
-				parent.getStatus()
-				);
+		StateNode child = createNode(parent);
 		
 		List<Point2D> temp = parent.getDirts();
 		
@@ -72,10 +54,24 @@ public class States {
 			temp.remove(child.getRoomba());
 		}
 		child.setDirts(temp);
+		child.setStatus(Status.Suck);
 		child.setPathCost(parent.getPathCost()+1);
-		parent.addChild(child);
 		nodes.add(child);
 			
  	}
+	
+	private StateNode createNode(StateNode parent) {
+		StateNode child = new StateNode(
+				parent.getDirts(),
+				parent.getRoomba(),
+				parent,
+				parent.getOri(),
+				parent.getPathCost(),
+				parent.getStatus()
+				);
+		
+		parent.addChild(child);
+		return child;
+	}
 	
 }

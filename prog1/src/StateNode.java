@@ -2,15 +2,15 @@ import java.util.List;
 
 
 public class StateNode {
-	public Ori ori;
+	public Orientation ori;
+	public Status status;
 	private List<Point2D> dirts;
 	private Point2D roomba;
 	private int pathCost;
 	private List<StateNode> childs;
 	private StateNode parent;
-	private Status status;
 	
-	StateNode(List<Point2D> dirts, Point2D roomba, StateNode parent, Ori ori, int pathCost, Status status) {
+	StateNode(List<Point2D> dirts, Point2D roomba, StateNode parent, Orientation ori, int pathCost, Status status) {
 		this.dirts = dirts;
 		this.roomba = roomba;
 		this.parent = parent;
@@ -31,11 +31,11 @@ public class StateNode {
 		return parent;
 	}
 	
-	public Ori getOri() {
+	public Orientation getOri() {
 		return ori;
 	}
 	
-	public void setOri(Ori ori ) {
+	public void setOri(Orientation ori ) {
 		this.ori = ori;
 	}
 	
@@ -43,8 +43,9 @@ public class StateNode {
 		return roomba;
 	}
 	
-	public void setRoomba(Point2D roomba) {
-		this.roomba = roomba;
+	public void setRoomba(int x, int y) {
+		this.roomba.x = x;
+		this.roomba.y = y;
 	}
 	
 	public List<Point2D> getDirts() {
@@ -71,24 +72,4 @@ public class StateNode {
 		this.status = status;
 	}
 	
-	public enum Ori {
-		North,
-		East,
-		South,
-		West;
-		public Ori getNext() {
-			return values()[(ordinal()+1) % values().length];
-		}
-		public Ori getPrev() {
-			return values()[(ordinal()+3) % values().length];
-		}
-	}
-	
-	public enum Status {
-		Suck,
-		Turn_Left,
-		Turn_Right,
-		Go,
-		Turn_Off;
-	}
 }
