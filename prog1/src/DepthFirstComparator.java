@@ -1,14 +1,14 @@
 import java.util.Comparator;
 
-public class DepthFirstComparator implements Comparator<String> {
+public class DepthFirstComparator implements Comparator<StateNode> {
     @Override
-    public int compare(String x, String y)
+    public int compare(StateNode x, StateNode y)
     {
-        if (x.length() < y.length())
+        if (x.getNumber() > y.getNumber())
         {
             return -1;
         }
-        if (x.length() > y.length())
+        if (x.getNumber() < y.getNumber())
         {
             return 1;
         }

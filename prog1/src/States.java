@@ -7,7 +7,7 @@ public class States {
 	}
 	
 	public void Turn_Right(List<StateNode> nodes, StateNode parent) {
-		StateNode child = createNode(parent);
+		StateNode child = createNode(nodes, parent);
 		
 		child.setOri(parent.ori.getNext());
 		child.setStatus(Status.Turn_Right);
@@ -16,7 +16,7 @@ public class States {
 	}
 	
 	public void Turn_Left(List<StateNode> nodes, StateNode parent) {
-		StateNode child = createNode(parent);
+		StateNode child = createNode(nodes, parent);
 		
 		child.setOri(parent.ori.getPrev());
 		child.setStatus(Status.Turn_Left);
@@ -25,7 +25,7 @@ public class States {
 	}
 	
 	public void Go(List<StateNode> nodes, StateNode parent) {
-		StateNode child = createNode(parent);
+		StateNode child = createNode(nodes, parent);
 		
 		Point2D roomba = parent.getRoomba();
 		switch(child.ori) {
@@ -46,7 +46,7 @@ public class States {
 	}
 	
 	public void Suck(List<StateNode> nodes, StateNode parent) {
-		StateNode child = createNode(parent);
+		StateNode child = createNode(nodes, parent);
 		
 		List<Point2D> temp = parent.getDirts();
 		
@@ -60,14 +60,15 @@ public class States {
 			
  	}
 	
-	private StateNode createNode(StateNode parent) {
+	private StateNode createNode(List<StateNode> nodes, StateNode parent) {
 		StateNode child = new StateNode(
 				parent.getDirts(),
 				parent.getRoomba(),
 				parent,
 				parent.getOri(),
 				parent.getPathCost(),
-				parent.getStatus()
+				parent.getStatus(),
+				nodes.size()+1
 				);
 		
 		parent.addChild(child);
