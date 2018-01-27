@@ -1,51 +1,78 @@
+import java.util.List;
 
 public class States {
-	private Ori ori;
 	private Environment envi;
 	States(Environment envi) {
-		ori = Ori.North;
 		this.envi = envi;
 	}
 	
-	public void Turn_Right() {
-		ori = ori.getNext();
+	public void Turn_Right(List<StateNode> nodes, StateNode parent) {
+		StateNode child = createNode(nodes, parent);
+		
+		child.setOri(parent.ori.getNext());
+		child.setStatus(Status.Turn_Right);
+		child.setPathCost(parent.getPathCost()+1);
+		nodes.add(child);
 	}
 	
-	public void Turn_Left() {
-		ori = ori.getPrev();
+	public void Turn_Left(List<StateNode> nodes, StateNode parent) {
+		StateNode child = createNode(nodes, parent);
+		
+		child.setOri(parent.ori.getPrev());
+		child.setStatus(Status.Turn_Left);
+		child.setPathCost(parent.getPathCost()+1);
+		nodes.add(child);
 	}
 	
-	public void Go() {
-		Point2D roomba = envi.getRoomba();
-		switch(ori) {
+	public void Go(List<StateNode> nodes, StateNode parent) {
+		StateNode child = createNode(nodes, parent);
+		
+		Point2D roomba = parent.getRoomba();
+		switch(child.ori) {
 		case North:
-			envi.setRoomba(roomba.x, roomba.y+1);
+			child.setRoomba(roomba.x, roomba.y+1);
 		case East:
-			envi.setRoomba(roomba.x+1, roomba.y);
+			child.setRoomba(roomba.x+1, roomba.y);
 		case South:
-			envi.setRoomba(roomba.x, roomba.y-1);
+			child.setRoomba(roomba.x, roomba.y-1);
 		case West:
-			envi.setRoomba(roomba.x-1, roomba.y);
+			child.setRoomba(roomba.x-1, roomba.y);
 		}
+		
+		child.setStatus(Status.Go);
+		child.setPathCost(parent.getPathCost()+1);
+		nodes.add(child);
+		
 	}
 	
-	public void Suck() {
-		Point2D roomba = envi.getRoomba();
-		if(envi.isDirt(roomba)) {
-			envi.removeDirt(roomba);
+	public void Suck(List<StateNode> nodes, StateNode parent) {
+		StateNode child = createNode(nodes, parent);
+		
+		List<Point2D> temp = parent.getDirts();
+		
+		if(child.isDirt(child.getRoomba())) {
+			temp.remove(child.getRoomba());
 		}
+		child.setDirts(temp);
+		child.setStatus(Status.Suck);
+		child.setPathCost(parent.getPathCost()+1);
+		nodes.add(child);
+			
  	}
 	
-	private enum Ori {
-		North,
-		East,
-		South,
-		West;
-		public Ori getNext() {
-			return values()[(ordinal()+1) % values().length];
-		}
-		public Ori getPrev() {
-			return values()[(ordinal()+3) % values().length];
-		}
+	private StateNode createNode(List<StateNode> nodes, StateNode parent) {
+		StateNode child = new StateNode(
+				parent.getDirts(),
+				parent.getRoomba(),
+				parent,
+				parent.getOri(),
+				parent.getPathCost(),
+				parent.getStatus(),
+				nodes.size()+1
+				);
+		
+		parent.addChild(child);
+		return child;
 	}
+	
 }
