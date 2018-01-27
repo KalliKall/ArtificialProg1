@@ -1,0 +1,38 @@
+root node = initial conditions
+
+if root node is goal state return root node
+
+insert root node into priority queue 
+
+while frontier not empty:
+	N = pop frontier
+	s = State (N)
+	fyrir hverja löglega aðgerð á S:
+		búa til barn N' í tilheyrandi ástandi
+		ef barnið er goal state þá return path(cost)
+		insert N' inn í priority queue
+return failure
+		
+"Að búa til sérhvert barn N" felur í sér eftir farandi:
+	if there is dirt in the cell:
+		perform SUCK og bua til child node með updated dirt list
+	else:
+		if not obstacle:
+			generate a child node for the successor states of GO, LEFT, RIGHT
+		else:
+			generate a child node for the successor states of LEFT,RIGHT
+		
+Til þess að breyta þessu í uniform cost search þurfum við að breyta samanburðarfallinu
+Það þarf að bera saman path costs og gefa þeim nóðum sem hafa lægst path cost mestan forgang
+EN við þurfum líka að færa hvar við athugum hvort við séum með goal state. Þurfum að gera
+það beint eftir að við poppum nóðu, ellegar gætu verið nóður í frontier með lægra path cost
+en það barn sem við erum að skoða hverju sinni. svo þetta lítur þá svona út:
+
+while frontier not empty:
+	N = pop frontier
+	s = State (N)
+	ef N er goal state þá return path(cost)
+	fyrir hverja löglega aðgerð á S:
+		búa til barn N' í tilheyrandi ástandi
+		insert N' inn í priority queue
+return failure
