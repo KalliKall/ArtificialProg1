@@ -31,8 +31,12 @@ en það barn sem við erum að skoða hverju sinni. svo þetta lítur þá svon
 while frontier not empty:
 	N = pop frontier
 	s = State (N)
-	ef N er goal state þá return path(cost)
-	fyrir hverja löglega aðgerð á S:
-		búa til barn N' í tilheyrandi ástandi
-		insert N' inn í priority queue
+	if N is goal state: return path(cost)
+	for all legal actions in S:
+		perform the action and generate the appropriate child node N'
+		insert N' to the priority queue
 return failure
+
+How to formulate the goal states? Let's start out with the goal of sucking up all the dirt
+and return home.
+GOAL: DIRT_LIST size 0, Roomba location is Home
