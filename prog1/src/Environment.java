@@ -18,8 +18,44 @@ public class Environment {
 	}
 	
 	
-	public boolean isObstacle(Point2D p) {	
-		return obstacles.contains(p);
+	public boolean isObstacle(StateNode node) {	
+
+		switch(node.ori) {
+		case North:
+			if(obstacles.contains(new Point2D(node.getRoomba().x, node.getRoomba().y+1))) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case East:
+			if(obstacles.contains(new Point2D(node.getRoomba().x+1, node.getRoomba().y))) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case South:
+			if(obstacles.contains(new Point2D(node.getRoomba().x, node.getRoomba().y-1))) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case West:
+			if(obstacles.contains(new Point2D(node.getRoomba().x-1, node.getRoomba().y))) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public boolean isHome(StateNode node) {
+		return node.getRoomba() == home;
 	}
 	
 }

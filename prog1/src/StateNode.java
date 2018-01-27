@@ -10,6 +10,7 @@ public class StateNode {
 	private List<StateNode> childs;
 	private StateNode parent;
 	private int number;
+	private boolean isGoal;
 	
 	StateNode(List<Point2D> dirts, Point2D roomba, StateNode parent, Orientation ori, int pathCost, Status status, int number) {
 		this.dirts = dirts;
@@ -19,6 +20,15 @@ public class StateNode {
 		this.pathCost = pathCost;
 		this.status = status;
 		this.number = number;
+		this.isGoal = false;
+	}
+	
+	public boolean getGoal() {
+		return isGoal;
+	}
+	
+	public void setGoal(boolean b) {
+		this.isGoal = b;
 	}
 	
 	public int getPathCost() {
@@ -58,8 +68,8 @@ public class StateNode {
 		this.dirts = dirts;
 	}
 	
-	public boolean isDirt(Point2D p) {	
-		return dirts.contains(p);
+	public boolean isDirt() {	
+		return dirts.contains(roomba);
 	}
 	
 	public void addChild(StateNode child) {

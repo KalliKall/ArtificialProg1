@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Comparator;
 
 public class Main {
 	
@@ -9,7 +10,7 @@ public class Main {
 	public static void main(String[] args){
 		try{
 			// TODO: put in your agent here
-			Agent agent = new RandomAgent();
+			Agent agent = new AgentRoomba();
 
 			int port=4001;
 			if(args.length>=1){

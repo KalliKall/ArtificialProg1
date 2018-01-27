@@ -4,5 +4,6 @@ public enum Status {
 	Turn_Left,
 	Turn_Right,
 	Go,
-	Turn_Off;
+	Turn_Off,
+	Turn_On
 }
