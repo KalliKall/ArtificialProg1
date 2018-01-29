@@ -135,21 +135,29 @@ public class AgentRoomba implements Agent {
 		
 		StateNode goalNode = findGoalState();
 		nodeList = goalPath(nodeList, goalNode);
+		
+		/*System.out.println(goalNode.getRoomba().x + ", " + goalNode.getRoomba().y);
+		
+		System.out.println(goalNode.getParent().getRoomba().x + ", " + goalNode.getParent().getRoomba().y);
+		
+		System.out.println(goalNode.getDirts().size());*/
     }
     
     private Stack<StateNode> goalPath(Stack<StateNode> nodeList, StateNode goalNode) {
     	StateNode node = goalNode;
     	
-    	while(node.getParent() != null) {
+    	while(node.getNumber() != 1) {
     		nodeList.push(node);
     		node = node.getParent();
     	}
+    	
+    	nodeList.push(initNode);
     	
     	return nodeList;
     }
     
     private StateNode findGoalState() {
-    	comparator = new DepthFirstComparator();
+    	comparator = new UniformCostComparator();
         queue = new PriorityQueue<StateNode>(comparator);
         
         queue.add(initNode);
@@ -157,14 +165,15 @@ public class AgentRoomba implements Agent {
     	if(initNode.getGoal()) {
     		return initNode;
     	}
- 
+    	
+    	StateNode node;
+    	
         while(!queue.isEmpty()) {
         	StateNode head = queue.poll();
-        	StateNode node;
         	if(head.isDirt()) {
         		node = states.Suck(head);
         		queue.add(states.Suck(head));
-        		System.out.println("Suck");
+        		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         	}
         	else {
         		if(envi.isObstacle(head)) {
@@ -181,17 +190,17 @@ public class AgentRoomba implements Agent {
         			queue.add(states.Turn_Right(head));
         			
         			node = states.Go(head);
-        			
                 	if(node.getGoal()) {
                 		return node;
                 	}
+                	
+        			queue.add(node);
                 	
                 	for(Point2D x : node.getDirts()) {
                 		//System.out.println(x.x + ", " + x.y);
                 	}
                 	
-        			queue.add(node);
-            		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+            		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
         }

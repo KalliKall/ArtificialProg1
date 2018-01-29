@@ -36,7 +36,7 @@ public class States {
 		StateNode child = createNode(parent);
 		
 		Point2D roomba = parent.getRoomba();
-		switch(child.ori) {
+		switch(child.getOri()) {
 		case North:
 			child.setRoomba(roomba.x, roomba.y+1);
 			break;
