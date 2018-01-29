@@ -55,7 +55,7 @@ public class States {
 		child.setPathCost(parent.getPathCost()+1);
 		nodes.add(child);
 		
-		if(child.getDirts().isEmpty()) {
+		if(envi.isHome(child) && child.getDirts().isEmpty()) {
 			child.setGoal(true);
 		}
 		

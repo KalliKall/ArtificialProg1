@@ -12,7 +12,7 @@ public class AgentRoomba implements Agent {
 	private StateNode initNode;
 	private Comparator<StateNode> comparator;
     PriorityQueue<StateNode> queue;
-    private States states= new States(envi);
+    private States states;
     private Stack<StateNode> nodeList = new Stack<StateNode>();
 	
 
@@ -113,6 +113,7 @@ public class AgentRoomba implements Agent {
 		}
 		
 		envi = new Environment(obstacles, home);
+		states = new States(envi);
 		initNode = new StateNode(
 				dirts,
 				home,
@@ -136,19 +137,19 @@ public class AgentRoomba implements Agent {
 		nodeList = goalPath(nodeList, goalNode);
     }
     
-    private Stack<StateNode> goalPath(Stack<StateNode> nodeList, StateNode node) {
-    	if(node.getParent() == null) {
-    		return nodeList;
-    	}
-    	else {
+    private Stack<StateNode> goalPath(Stack<StateNode> nodeList, StateNode goalNode) {
+    	StateNode node = goalNode;
+    	
+    	while(node.getParent() != null) {
     		nodeList.push(node);
-    		System.out.println("pushing");
-    		return goalPath(nodeList, node);
+    		node = node.getParent();
     	}
+    	
+    	return nodeList;
     }
     
     private StateNode findGoalState() {
-    	comparator = new BreadthFirstComparator();
+    	comparator = new DepthFirstComparator();
         queue = new PriorityQueue<StateNode>(comparator);
         
         queue.add(initNode);
@@ -156,18 +157,12 @@ public class AgentRoomba implements Agent {
     	if(initNode.getGoal()) {
     		return initNode;
     	}
-    	for(Point2D x : initNode.getDirts()) {
-    		System.out.println(x.x + ", " + x.y);
-    	}
  
         while(!queue.isEmpty()) {
         	StateNode head = queue.poll();
         	StateNode node;
         	if(head.isDirt()) {
         		node = states.Suck(head);
-            	if(node.getGoal()) {
-            		return node;
-            	}
         		queue.add(states.Suck(head));
         		System.out.println("Suck");
         	}
@@ -191,12 +186,12 @@ public class AgentRoomba implements Agent {
                 		return node;
                 	}
                 	
-                	for(Point2D x : initNode.getDirts()) {
+                	for(Point2D x : node.getDirts()) {
                 		//System.out.println(x.x + ", " + x.y);
                 	}
                 	
         			queue.add(node);
-            		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+            		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
         }
