@@ -56,22 +56,22 @@ public class AgentRoomba implements Agent {
 					if (m.matches()) {
 						size = new Point2D(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
 						System.out.println("size is " + m.group(1) + "," + m.group(2));
-						for(int i = -1; i < size.x+1; i++) {
-							Point2D p = new Point2D(i, -1);
+						for(int i = 0; i < size.x+2; i++) {
+							Point2D p = new Point2D(i, 0);
 							obstacles.add(p);
 						}
 						
-						for(int i = -1; i < size.x+1; i++) {
+						for(int i = 0; i < size.x+2; i++) {
 							Point2D p = new Point2D(i, size.y+1);
 							obstacles.add(p);
 						}
 						
-						for(int i = 0; i < size.y; i++) {
-							Point2D p = new Point2D(-1, i);
+						for(int i = 1; i < size.y+1; i++) {
+							Point2D p = new Point2D(0, i);
 							obstacles.add(p);
 						}
 						
-						for(int i = 0; i < size.y; i++) {
+						for(int i = 1; i < size.y+1; i++) {
 							Point2D p = new Point2D(size.x+1, i);
 							obstacles.add(p);
 						}
@@ -104,7 +104,7 @@ public class AgentRoomba implements Agent {
 					m = Pattern.compile("\\(\\s*AT\\s*OBSTACLE\\s+([0-9]+)\\s+([0-9]+)\\s*\\)").matcher(percept);
 					if (m.matches()) {
 						obstacles.add(new Point2D(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2))));
-						System.out.println("Obstacle added at " + m.group(1) + "," + m.group(2));
+						//System.out.println("Obstacle added at " + m.group(1) + "," + m.group(2));
 					}
 				} else {
 					System.err.println("strange percept that does not match pattern: " + percept);
@@ -123,7 +123,12 @@ public class AgentRoomba implements Agent {
 				1
 				);
 		
+		for(Point2D x : obstacles) {
+			System.out.println("Obstacle is at: " + x.x + ", " + x.y);
+
+		}
 		System.out.println("Obstacle size is: " + obstacles.size());
+		
 		
 		StateNode goalNode = findGoalState();
 		nodeList = goalPath(nodeList, goalNode);
@@ -141,31 +146,47 @@ public class AgentRoomba implements Agent {
     }
     
     private StateNode findGoalState() {
-    	comparator = new BreadthFirstComparator();
+    	comparator = new DepthFirstComparator();
         queue = new PriorityQueue<StateNode>(comparator);
         
         queue.add(initNode);
         
+    	if(initNode.getGoal()) {
+    		return initNode;
+    	}
+        
         while(!queue.isEmpty()) {
         	StateNode head = queue.poll();
-        	if(head.getGoal()) {
-        		return head;
-        	}
+        	StateNode node;
         	if(head.isDirt()) {
+        		node = states.Suck(head);
+            	if(node.getGoal()) {
+            		return node;
+            	}
         		queue.add(states.Suck(head));
-        		//System.out.println("Sucking");
+        		System.out.println("Sucking");
         	}
         	else {
         		if(envi.isObstacle(head)) {
-        			queue.add(states.Turn_Left(head));
+        			node = states.Turn_Left(head);
+        			queue.add(node);
         			queue.add(states.Turn_Right(head));
             		//System.out.println("Obstacle");
+            		//System.out.println(node.getOri().toString());
+            		
         		}
         		else {
         			queue.add(states.Turn_Left(head));
         			queue.add(states.Turn_Right(head));
-        			queue.add(states.Go(head));
-            		//System.out.println("Going");
+        			
+        			node = states.Go(head);
+        			
+                	if(node.getGoal()) {
+                		return node;
+                	}
+        			
+        			queue.add(node);
+            		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
         }
