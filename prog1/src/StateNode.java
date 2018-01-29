@@ -73,7 +73,6 @@ public class StateNode {
 	public boolean isDirt() {	
 		for(Point2D x : dirts) {
 			if(x.x == roomba.x && x.y == roomba.y) {
-				System.out.println("on my knees, sucking!");
 				return true;
 			}
 		}

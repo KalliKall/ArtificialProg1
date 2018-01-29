@@ -24,12 +24,16 @@ public class Environment {
 		switch(node.getOri()) {
 		case North:
 			p = new Point2D(node.getRoomba().x, node.getRoomba().y+1);
+			break;
 		case East:
 			p = new Point2D(node.getRoomba().x+1, node.getRoomba().y);
+			break;
 		case South:
 			p = new Point2D(node.getRoomba().x, node.getRoomba().y-1);
+			break;
 		case West:
 			p = new Point2D(node.getRoomba().x-1, node.getRoomba().y);
+			break;
 		}
 		
 		for(Point2D x : obstacles) {
@@ -37,12 +41,11 @@ public class Environment {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 	
 	public boolean isHome(StateNode node) {
-		return node.getRoomba() == home;
+		return node.getRoomba().x == home.x && node.getRoomba().y == home.y;
 	}
 	
 }

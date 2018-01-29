@@ -39,12 +39,16 @@ public class States {
 		switch(child.ori) {
 		case North:
 			child.setRoomba(roomba.x, roomba.y+1);
+			break;
 		case East:
 			child.setRoomba(roomba.x+1, roomba.y);
+			break;
 		case South:
 			child.setRoomba(roomba.x, roomba.y-1);
+			break;
 		case West:
 			child.setRoomba(roomba.x-1, roomba.y);
+			break;
 		}
 		
 		child.setStatus(Status.GO);
@@ -62,10 +66,13 @@ public class States {
 	public StateNode Suck(StateNode parent) {
 		StateNode child = createNode(parent);
 		
-		List<Point2D> temp = parent.getDirts();
+		List<Point2D> temp = new ArrayList<Point2D>();
+		for(Point2D x : child.getDirts()) {
+			if(child.getRoomba().x != x.x && child.getRoomba().y != x.y) {
+				temp.add(x);
+			}
+		}
 		
-
-		temp.remove(child.getRoomba());
 		child.setDirts(temp);
 		child.setStatus(Status.SUCK);
 		child.setPathCost(parent.getPathCost()+1);

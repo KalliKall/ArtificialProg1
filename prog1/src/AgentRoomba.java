@@ -127,6 +127,8 @@ public class AgentRoomba implements Agent {
 			System.out.println("Obstacle is at: " + x.x + ", " + x.y);
 
 		}
+		
+		
 		System.out.println("Obstacle size is: " + obstacles.size());
 		
 		
@@ -146,7 +148,7 @@ public class AgentRoomba implements Agent {
     }
     
     private StateNode findGoalState() {
-    	comparator = new DepthFirstComparator();
+    	comparator = new BreadthFirstComparator();
         queue = new PriorityQueue<StateNode>(comparator);
         
         queue.add(initNode);
@@ -154,7 +156,10 @@ public class AgentRoomba implements Agent {
     	if(initNode.getGoal()) {
     		return initNode;
     	}
-        
+    	for(Point2D x : initNode.getDirts()) {
+    		System.out.println(x.x + ", " + x.y);
+    	}
+ 
         while(!queue.isEmpty()) {
         	StateNode head = queue.poll();
         	StateNode node;
@@ -164,7 +169,7 @@ public class AgentRoomba implements Agent {
             		return node;
             	}
         		queue.add(states.Suck(head));
-        		System.out.println("Sucking");
+        		System.out.println("Suck");
         	}
         	else {
         		if(envi.isObstacle(head)) {
@@ -173,6 +178,7 @@ public class AgentRoomba implements Agent {
         			queue.add(states.Turn_Right(head));
             		//System.out.println("Obstacle");
             		//System.out.println(node.getOri().toString());
+            		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
             		
         		}
         		else {
@@ -184,9 +190,13 @@ public class AgentRoomba implements Agent {
                 	if(node.getGoal()) {
                 		return node;
                 	}
-        			
+                	
+                	for(Point2D x : initNode.getDirts()) {
+                		//System.out.println(x.x + ", " + x.y);
+                	}
+                	
         			queue.add(node);
-            		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+            		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
         }
