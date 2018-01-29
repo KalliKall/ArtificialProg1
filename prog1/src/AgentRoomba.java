@@ -146,7 +146,8 @@ public class AgentRoomba implements Agent {
     private Stack<StateNode> goalPath(Stack<StateNode> nodeList, StateNode goalNode) {
     	StateNode node = goalNode;
     	
-    	while(node.getNumber() != 1) {
+    	while(node.getParent() != null) {
+		System.out.println(node.getStatus());
     		nodeList.push(node);
     		node = node.getParent();
     	}
@@ -196,9 +197,7 @@ public class AgentRoomba implements Agent {
                 	
         			queue.add(node);
                 	
-                	for(Point2D x : node.getDirts()) {
-                		//System.out.println(x.x + ", " + x.y);
-                	}
+             
                 	
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
@@ -220,6 +219,7 @@ public class AgentRoomba implements Agent {
 		else {
 			StateNode node = nodeList.pop();
 			System.out.println("popping");
+			System.out.println(node.getStatus());
 			return node.getStatus().toString();
 		}
 	}
