@@ -14,7 +14,7 @@ public class States {
 		StateNode child = createNode(parent);
 		
 		child.setOri(parent.ori.getNext());
-		child.setStatus(Status.Turn_Right);
+		child.setStatus(Status.TURN_RIGHT);
 		child.setPathCost(parent.getPathCost()+1);
 		nodes.add(child);
 		
@@ -25,7 +25,7 @@ public class States {
 		StateNode child = createNode(parent);
 		
 		child.setOri(parent.ori.getPrev());
-		child.setStatus(Status.Turn_Left);
+		child.setStatus(Status.TURN_LEFT);
 		child.setPathCost(parent.getPathCost()+1);
 		nodes.add(child);
 		
@@ -47,11 +47,11 @@ public class States {
 			child.setRoomba(roomba.x-1, roomba.y);
 		}
 		
-		child.setStatus(Status.Go);
+		child.setStatus(Status.GO);
 		child.setPathCost(parent.getPathCost()+1);
 		nodes.add(child);
 		
-		if(envi.isHome(child) && child.getDirts().isEmpty()) {
+		if(child.getDirts().isEmpty()) {
 			child.setGoal(true);
 		}
 		
@@ -64,11 +64,10 @@ public class States {
 		
 		List<Point2D> temp = parent.getDirts();
 		
-		if(child.isDirt()) {
-			temp.remove(child.getRoomba());
-		}
+
+		temp.remove(child.getRoomba());
 		child.setDirts(temp);
-		child.setStatus(Status.Suck);
+		child.setStatus(Status.SUCK);
 		child.setPathCost(parent.getPathCost()+1);
 		nodes.add(child);
 			

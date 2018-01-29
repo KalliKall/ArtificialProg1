@@ -1,9 +1,10 @@
 
 public enum Status {
-	Suck,
-	Turn_Left,
-	Turn_Right,
-	Go,
-	Turn_Off,
-	Turn_On
+	SUCK,
+	TURN_LEFT,
+	TURN_RIGHT,
+	GO,
+	TURN_OFF,
+	TURN_ON
 }
+

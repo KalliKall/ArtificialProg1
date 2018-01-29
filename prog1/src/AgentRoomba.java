@@ -13,7 +13,7 @@ public class AgentRoomba implements Agent {
 	private Comparator<StateNode> comparator;
     PriorityQueue<StateNode> queue;
     private States states= new States(envi);
-    private Stack<StateNode> nodeList;
+    private Stack<StateNode> nodeList = new Stack<StateNode>();
 	
 
 	/*
@@ -119,14 +119,13 @@ public class AgentRoomba implements Agent {
 				null,
 				ori,
 				0,
-				Status.Turn_On,
+				Status.TURN_ON,
 				1
 				);
 		
 		System.out.println("Obstacle size is: " + obstacles.size());
 		
 		StateNode goalNode = findGoalState();
-		nodeList = new Stack<StateNode>();
 		nodeList = goalPath(nodeList, goalNode);
     }
     
@@ -136,6 +135,7 @@ public class AgentRoomba implements Agent {
     	}
     	else {
     		nodeList.push(node);
+    		System.out.println("pushing");
     		return goalPath(nodeList, node);
     	}
     }
@@ -153,16 +153,19 @@ public class AgentRoomba implements Agent {
         	}
         	if(head.isDirt()) {
         		queue.add(states.Suck(head));
+        		//System.out.println("Sucking");
         	}
         	else {
         		if(envi.isObstacle(head)) {
         			queue.add(states.Turn_Left(head));
         			queue.add(states.Turn_Right(head));
+            		//System.out.println("Obstacle");
         		}
         		else {
         			queue.add(states.Turn_Left(head));
         			queue.add(states.Turn_Right(head));
         			queue.add(states.Go(head));
+            		//System.out.println("Going");
         		}
         	}
         }
@@ -177,10 +180,11 @@ public class AgentRoomba implements Agent {
 		}
 		System.out.println("");
 		if(nodeList.isEmpty()) {
-			return "Turn_Off";
+			return "TURN_OFF";
 		}
 		else {
 			StateNode node = nodeList.pop();
+			System.out.println("popping");
 			return node.getStatus().toString();
 		}
 	}

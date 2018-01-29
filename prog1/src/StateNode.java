@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,6 +22,7 @@ public class StateNode {
 		this.status = status;
 		this.number = number;
 		this.isGoal = false;
+		this.childs = new ArrayList<StateNode>();
 	}
 	
 	public boolean getGoal() {
