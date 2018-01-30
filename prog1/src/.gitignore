@@ -11,3 +11,9 @@
 /RandomAgent.class
 /States$Ori.class
 /States.class
+/BreadthFirstComparator.class
+/DepthFirstComparator.class
+/Orientation.class
+/StateNode.class
+/Status.class
+/UniformCostComparator.class
