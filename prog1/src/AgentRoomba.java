@@ -161,6 +161,7 @@ public class AgentRoomba implements Agent {
     private StateNode findGoalState() {
     	comparator = new BreadthFirstComparator();
         queue = new PriorityQueue<StateNode>(comparator);
+        int depth = 1;
         
         queue.add(initNode);
         
@@ -197,6 +198,7 @@ public class AgentRoomba implements Agent {
         	}
         	
         	if(head.isDirt()) {
+<<<<<<< HEAD
         		node = states.Suck(head);
         		queue.add(states.Suck(head));
 //        		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
@@ -204,6 +206,20 @@ public class AgentRoomba implements Agent {
         	else {
         		if(envi.isObstacle(head)) {
         			node = states.Turn_Left(head);
+=======
+            	StateNode node;
+        		node = states.Suck(head, depth);
+        		queue.add(node);
+        		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+        	}
+        	else {
+        		if(envi.isObstacle(head)) {
+                	StateNode node;
+                	StateNode node2;
+                	node2 = states.Turn_Right(head, depth);
+        			queue.add(node2);
+                	node = states.Turn_Left(head, depth);
+>>>>>>> parent of 31d5ddd... nn
         			queue.add(node);
         			queue.add(states.Turn_Right(head));
             		//System.out.println("Obstacle");
@@ -212,6 +228,7 @@ public class AgentRoomba implements Agent {
             		
         		}
         		else {
+<<<<<<< HEAD
         			queue.add(states.Turn_Left(head));
         			queue.add(states.Turn_Right(head));
         			
@@ -220,6 +237,20 @@ public class AgentRoomba implements Agent {
                 		return node;
                 	}
                 	
+=======
+                	StateNode node;
+                	StateNode node2;
+                	StateNode node3;
+                	node3 = states.Go(head, depth);
+        			queue.add(node3);
+        			
+        			if(node3.getGoal()) {
+        				return node3;
+        			}
+                	node2 = states.Turn_Right(head, depth);
+        			queue.add(node2);
+                	node = states.Turn_Left(head, depth);
+>>>>>>> parent of 31d5ddd... nn
         			queue.add(node);
                 	
              
@@ -227,6 +258,7 @@ public class AgentRoomba implements Agent {
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
+        	depth++;
         }
         
         return null;
