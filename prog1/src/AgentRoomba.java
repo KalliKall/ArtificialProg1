@@ -121,7 +121,7 @@ public class AgentRoomba implements Agent {
 				ori,
 				0,
 				Status.TURN_ON,
-				1
+				0
 				);
 		
 		for(Point2D x : obstacles) {
@@ -158,9 +158,11 @@ public class AgentRoomba implements Agent {
     }
     
     private StateNode findGoalState() {
-    	//comparator = new BreadthFirstComparator();
-    	comparator = new DepthFirstComparator();
+    	comparator = new BreadthFirstComparator();
+    	//comparator = new DepthFirstComparator();
+    	//comparator = new UniformCostComparator();
         queue = new PriorityQueue<StateNode>(comparator);
+        int depth = 1;
         
         queue.add(initNode);
         
@@ -178,17 +180,18 @@ public class AgentRoomba implements Agent {
         	
         	if(head.isDirt()) {
             	StateNode node;
-        		node = states.Suck(head, queue.size()+1);
+        		node = states.Suck(head, depth);
         		queue.add(node);
+        		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         	}
         	else {
         		if(envi.isObstacle(head)) {
                 	StateNode node;
                 	StateNode node2;
-                	node = states.Turn_Left(head, queue.size()+1);
-        			queue.add(node);
-                	node2 = states.Turn_Right(head, queue.size()+1);
+                	node2 = states.Turn_Right(head, depth);
         			queue.add(node2);
+                	node = states.Turn_Left(head, depth);
+        			queue.add(node);
             		//System.out.println("Obstacle");
             		//System.out.println(node.getOri().toString());
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
@@ -199,18 +202,23 @@ public class AgentRoomba implements Agent {
                 	StateNode node;
                 	StateNode node2;
                 	StateNode node3;
-                	node = states.Turn_Left(head, queue.size()+1);
-        			queue.add(node);
-                	node2 = states.Turn_Right(head, queue.size()+1);
-        			queue.add(node2);
-                	node3 = states.Go(head, queue.size()+1);
-
+                	node3 = states.Go(head, depth);
         			queue.add(node3);
+        			
+        			if(node3.getGoal()) {
+        				return node3;
+        			}
+                	node2 = states.Turn_Right(head, depth);
+        			queue.add(node2);
+                	node = states.Turn_Left(head, depth);
+        			queue.add(node);
+        			
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         			//if(node.getRoomba().y == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         			//if(node.getRoomba().x == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
+        	depth++;
         }
         
         return null;

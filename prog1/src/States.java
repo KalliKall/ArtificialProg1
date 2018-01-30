@@ -81,6 +81,7 @@ public class States {
 		Orientation ori = parent.getOri();
 		Status stat = parent.getStatus();
 		int path = parent.getPathCost();
+		
 		StateNode child = new StateNode(
 				dirts,
 				roomba,
