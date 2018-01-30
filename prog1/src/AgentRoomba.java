@@ -158,7 +158,8 @@ public class AgentRoomba implements Agent {
     }
     
     private StateNode findGoalState() {
-    	comparator = new BreadthFirstComparator();
+    	//comparator = new BreadthFirstComparator();
+    	comparator = new DepthFirstComparator();
         queue = new PriorityQueue<StateNode>(comparator);
         
         queue.add(initNode);
@@ -167,39 +168,46 @@ public class AgentRoomba implements Agent {
     		return initNode;
     	}
     	
-    	StateNode node;
+    	//StateNode node;
     	
         while(!queue.isEmpty()) {
         	StateNode head = queue.poll();
+        	if(head.getGoal()) {
+        		return head;
+        	}
+        	
         	if(head.isDirt()) {
+            	StateNode node;
         		node = states.Suck(head);
-        		queue.add(states.Suck(head));
-        		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+        		queue.add(node);
         	}
         	else {
         		if(envi.isObstacle(head)) {
-        			node = states.Turn_Left(head);
+                	StateNode node;
+                	StateNode node2;
+                	node = states.Turn_Left(head);
+                	node2 = states.Turn_Right(head);
         			queue.add(node);
-        			queue.add(states.Turn_Right(head));
+        			queue.add(node2);
             		//System.out.println("Obstacle");
             		//System.out.println(node.getOri().toString());
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+
             		
         		}
         		else {
-        			queue.add(states.Turn_Left(head));
-        			queue.add(states.Turn_Right(head));
-        			
-        			node = states.Go(head);
-                	if(node.getGoal()) {
-                		return node;
-                	}
-                	
+                	StateNode node;
+                	StateNode node2;
+                	StateNode node3;
+                	node = states.Turn_Left(head);
+                	node2 = states.Turn_Right(head);
+                	node3 = states.Go(head);
         			queue.add(node);
-                	
-             
-                	
+        			queue.add(node2);
+        			queue.add(node3);
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+        			//if(node.getRoomba().y == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+        			//if(node.getRoomba().x == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
         }
