@@ -162,7 +162,6 @@ public class AgentRoomba implements Agent {
     	//comparator = new DepthFirstComparator();
     	//comparator = new UniformCostComparator();
         queue = new PriorityQueue<StateNode>(comparator);
-        int depth = 1;
         
         queue.add(initNode);
         
@@ -180,7 +179,7 @@ public class AgentRoomba implements Agent {
         	
         	if(head.isDirt()) {
             	StateNode node;
-        		node = states.Suck(head, depth);
+        		node = states.Suck(head);
         		queue.add(node);
         		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         	}
@@ -188,9 +187,9 @@ public class AgentRoomba implements Agent {
         		if(envi.isObstacle(head)) {
                 	StateNode node;
                 	StateNode node2;
-                	node2 = states.Turn_Right(head, depth);
+                	node2 = states.Turn_Right(head);
         			queue.add(node2);
-                	node = states.Turn_Left(head, depth);
+                	node = states.Turn_Left(head);
         			queue.add(node);
             		//System.out.println("Obstacle");
             		//System.out.println(node.getOri().toString());
@@ -202,15 +201,15 @@ public class AgentRoomba implements Agent {
                 	StateNode node;
                 	StateNode node2;
                 	StateNode node3;
-                	node3 = states.Go(head, depth);
+                	node3 = states.Go(head);
         			queue.add(node3);
         			
         			if(node3.getGoal()) {
         				return node3;
         			}
-                	node2 = states.Turn_Right(head, depth);
+                	node2 = states.Turn_Right(head);
         			queue.add(node2);
-                	node = states.Turn_Left(head, depth);
+                	node = states.Turn_Left(head);
         			queue.add(node);
         			
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
@@ -218,7 +217,6 @@ public class AgentRoomba implements Agent {
         			//if(node.getRoomba().x == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
-        	depth++;
         }
         
         return null;

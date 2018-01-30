@@ -8,8 +8,8 @@ public class States {
 		this.envi = envi;
 	}
 	
-	public StateNode Turn_Right(StateNode parent, int num) {
-		StateNode child = createNode(parent, num);
+	public StateNode Turn_Right(StateNode parent) {
+		StateNode child = createNode(parent);
 		
 		child.setOri(parent.ori.getNext());
 		child.setStatus(Status.TURN_RIGHT);
@@ -18,8 +18,8 @@ public class States {
 		return child;
 	}
 	
-	public StateNode Turn_Left(StateNode parent, int num) {
-		StateNode child = createNode(parent, num);
+	public StateNode Turn_Left(StateNode parent) {
+		StateNode child = createNode(parent);
 		
 		child.setOri(parent.ori.getPrev());
 		child.setStatus(Status.TURN_LEFT);
@@ -28,8 +28,8 @@ public class States {
 		return child;
 	}
 	
-	public StateNode Go(StateNode parent, int num) {
-		StateNode child = createNode(parent, num);
+	public StateNode Go(StateNode parent) {
+		StateNode child = createNode(parent);
 		Point2D roomba = child.getRoomba();
 		switch(child.getOri()) {
 		case North:
@@ -49,7 +49,7 @@ public class States {
 		child.setStatus(Status.GO);
 		child.setPathCost(parent.getPathCost()+1);
 		
-		if(envi.isHome(child) && child.getDirts().size() == 3) {
+		if(envi.isHome(child) && child.getDirts().size() == 0) {
 			child.setGoal(true);
 		}
 		
@@ -57,8 +57,8 @@ public class States {
 		
 	}
 	
-	public StateNode Suck(StateNode parent, int num) {
-		StateNode child = createNode(parent, num);
+	public StateNode Suck(StateNode parent) {
+		StateNode child = createNode(parent);
 		
 		List<Point2D> temp = new ArrayList<Point2D>();
 		for(Point2D x : child.getDirts()) {
@@ -74,7 +74,7 @@ public class States {
 		return child;
  	}
 	
-	private StateNode createNode(StateNode parent, int num) {
+	private StateNode createNode(StateNode parent) {
 		Point2D roomba = new Point2D(parent.getRoomba().x, parent.getRoomba().y);
 		List<Point2D> dirts = new ArrayList<Point2D>();
 		dirts.addAll(parent.getDirts());
@@ -89,7 +89,7 @@ public class States {
 				ori,
 				path,
 				stat,
-				num
+				parent.getNumber()+1
 				);
 		
 		return child;
