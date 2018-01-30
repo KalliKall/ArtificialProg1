@@ -8,7 +8,6 @@ public class StateNode {
 	private List<Point2D> dirts;
 	private Point2D roomba;
 	private int pathCost;
-	private List<StateNode> childs;
 	private StateNode parent;
 	private int number;
 	private boolean isGoal;
@@ -22,7 +21,6 @@ public class StateNode {
 		this.status = status;
 		this.number = number;
 		this.isGoal = false;
-		this.childs = new ArrayList<StateNode>();
 	}
 	
 	public boolean getGoal() {
@@ -77,10 +75,6 @@ public class StateNode {
 			}
 		}
 		return false;
-	}
-	
-	public void addChild(StateNode child) {
-		childs.add(child);
 	}
 	
 	public Status getStatus() {

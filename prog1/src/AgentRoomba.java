@@ -157,7 +157,7 @@ public class AgentRoomba implements Agent {
     }
     
     private StateNode findGoalState() {
-    	comparator = new UniformCostComparator();
+    	comparator = new BreadthFirstComparator();
         queue = new PriorityQueue<StateNode>(comparator);
         
         queue.add(initNode);
@@ -173,7 +173,7 @@ public class AgentRoomba implements Agent {
         	if(head.isDirt()) {
         		node = states.Suck(head);
         		queue.add(states.Suck(head));
-        		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+        		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         	}
         	else {
         		if(envi.isObstacle(head)) {

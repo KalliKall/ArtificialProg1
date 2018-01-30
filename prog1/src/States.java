@@ -34,8 +34,7 @@ public class States {
 	
 	public StateNode Go(StateNode parent) {
 		StateNode child = createNode(parent);
-		
-		Point2D roomba = parent.getRoomba();
+		Point2D roomba = child.getRoomba();
 		switch(child.getOri()) {
 		case North:
 			child.setRoomba(roomba.x, roomba.y+1);
@@ -55,7 +54,7 @@ public class States {
 		child.setPathCost(parent.getPathCost()+1);
 		nodes.add(child);
 		
-		if(envi.isHome(child) && child.getDirts().isEmpty()) {
+		if(envi.isHome(child) && child.getDirts().size() == 2) {
 			child.setGoal(true);
 		}
 		
@@ -82,9 +81,10 @@ public class States {
  	}
 	
 	private StateNode createNode(StateNode parent) {
+		Point2D roomba = new Point2D(parent.getRoomba().x, parent.getRoomba().y);
 		StateNode child = new StateNode(
 				parent.getDirts(),
-				parent.getRoomba(),
+				roomba,
 				parent,
 				parent.getOri(),
 				parent.getPathCost(),
@@ -92,7 +92,6 @@ public class States {
 				nodes.size()+1
 				);
 		
-		parent.addChild(child);
 		return child;
 	}
 	
