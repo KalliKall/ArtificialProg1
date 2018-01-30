@@ -14,6 +14,7 @@ public class AgentRoomba implements Agent {
     PriorityQueue<StateNode> queue;
     private States states;
     private Stack<StateNode> nodeList = new Stack<StateNode>();
+    private List<Long> visitedStates = new ArrayList<Long>();
 	
 
 	/*
@@ -121,7 +122,7 @@ public class AgentRoomba implements Agent {
 				ori,
 				0,
 				Status.TURN_ON,
-				0
+				1
 				);
 		
 		for(Point2D x : obstacles) {
@@ -159,8 +160,6 @@ public class AgentRoomba implements Agent {
     
     private StateNode findGoalState() {
     	comparator = new BreadthFirstComparator();
-    	//comparator = new DepthFirstComparator();
-    	//comparator = new UniformCostComparator();
         queue = new PriorityQueue<StateNode>(comparator);
         
         queue.add(initNode);
@@ -169,52 +168,63 @@ public class AgentRoomba implements Agent {
     		return initNode;
     	}
     	
-    	//StateNode node;
+    	StateNode node;
     	
         while(!queue.isEmpty()) {
         	StateNode head = queue.poll();
-        	if(head.getGoal()) {
-        		return head;
+        	
+        	long xpos = head.getRoomba().x;
+        	long ypos = head.getRoomba().y;
+        	long dirtsLeft = head.getDirts().size();
+        	long orientation = 0;
+        	switch (head.getOri()) {
+            case North:	orientation = 1;
+            				break;	
+            case East:	orientation = 2;
+            				break;	
+            case South:	orientation = 3;
+            				break;	
+            case West:	orientation = 4;
+            				break;	
+        	}
+        	long currentState = xpos + 100*ypos + 10000*dirtsLeft + 1000000*orientation;
+    		
+        	if (visitedStates.contains(currentState)) {
+        		//Don't search childs
+        	}
+        	else {
+        		visitedStates.add(currentState);
         	}
         	
         	if(head.isDirt()) {
-            	StateNode node;
         		node = states.Suck(head);
-        		queue.add(node);
-        		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
+        		queue.add(states.Suck(head));
+//        		System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         	}
         	else {
         		if(envi.isObstacle(head)) {
-                	StateNode node;
-                	StateNode node2;
-                	node2 = states.Turn_Right(head);
-        			queue.add(node2);
-                	node = states.Turn_Left(head);
+        			node = states.Turn_Left(head);
         			queue.add(node);
+        			queue.add(states.Turn_Right(head));
             		//System.out.println("Obstacle");
             		//System.out.println(node.getOri().toString());
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
-
             		
         		}
         		else {
-                	StateNode node;
-                	StateNode node2;
-                	StateNode node3;
-                	node3 = states.Go(head);
-        			queue.add(node3);
+        			queue.add(states.Turn_Left(head));
+        			queue.add(states.Turn_Right(head));
         			
-        			if(node3.getGoal()) {
-        				return node3;
-        			}
-                	node2 = states.Turn_Right(head);
-        			queue.add(node2);
-                	node = states.Turn_Left(head);
+        			node = states.Go(head);
+                	if(node.getGoal()) {
+                		return node;
+                	}
+                	
         			queue.add(node);
-        			
+                	
+             
+                	
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
-        			//if(node.getRoomba().y == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
-        			//if(node.getRoomba().x == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         		}
         	}
         }
