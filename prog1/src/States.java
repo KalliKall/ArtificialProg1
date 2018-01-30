@@ -3,37 +3,33 @@ import java.util.List;
 
 public class States {
 	
-	private List<StateNode> nodes;
 	private Environment envi;
 	States(Environment envi) {
-		this.nodes = new ArrayList<StateNode>();
 		this.envi = envi;
 	}
 	
-	public StateNode Turn_Right(StateNode parent) {
-		StateNode child = createNode(parent);
+	public StateNode Turn_Right(StateNode parent, int num) {
+		StateNode child = createNode(parent, num);
 		
 		child.setOri(parent.ori.getNext());
 		child.setStatus(Status.TURN_RIGHT);
 		child.setPathCost(parent.getPathCost()+1);
-		nodes.add(child);
 		
 		return child;
 	}
 	
-	public StateNode Turn_Left(StateNode parent) {
-		StateNode child = createNode(parent);
+	public StateNode Turn_Left(StateNode parent, int num) {
+		StateNode child = createNode(parent, num);
 		
 		child.setOri(parent.ori.getPrev());
 		child.setStatus(Status.TURN_LEFT);
 		child.setPathCost(parent.getPathCost()+1);
-		nodes.add(child);
 		
 		return child;
 	}
 	
-	public StateNode Go(StateNode parent) {
-		StateNode child = createNode(parent);
+	public StateNode Go(StateNode parent, int num) {
+		StateNode child = createNode(parent, num);
 		Point2D roomba = child.getRoomba();
 		switch(child.getOri()) {
 		case North:
@@ -52,9 +48,8 @@ public class States {
 		
 		child.setStatus(Status.GO);
 		child.setPathCost(parent.getPathCost()+1);
-		nodes.add(child);
 		
-		if(envi.isHome(child) && child.getDirts().size() == 0) {
+		if(envi.isHome(child) && child.getDirts().size() == 3) {
 			child.setGoal(true);
 		}
 		
@@ -62,8 +57,8 @@ public class States {
 		
 	}
 	
-	public StateNode Suck(StateNode parent) {
-		StateNode child = createNode(parent);
+	public StateNode Suck(StateNode parent, int num) {
+		StateNode child = createNode(parent, num);
 		
 		List<Point2D> temp = new ArrayList<Point2D>();
 		for(Point2D x : child.getDirts()) {
@@ -75,12 +70,11 @@ public class States {
 		child.setDirts(temp);
 		child.setStatus(Status.SUCK);
 		child.setPathCost(parent.getPathCost()+1);
-		nodes.add(child);
 			
 		return child;
  	}
 	
-	private StateNode createNode(StateNode parent) {
+	private StateNode createNode(StateNode parent, int num) {
 		Point2D roomba = new Point2D(parent.getRoomba().x, parent.getRoomba().y);
 		List<Point2D> dirts = new ArrayList<Point2D>();
 		dirts.addAll(parent.getDirts());
@@ -94,7 +88,7 @@ public class States {
 				ori,
 				path,
 				stat,
-				nodes.size()+1
+				num
 				);
 		
 		return child;

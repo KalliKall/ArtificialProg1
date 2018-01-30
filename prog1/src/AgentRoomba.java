@@ -178,16 +178,16 @@ public class AgentRoomba implements Agent {
         	
         	if(head.isDirt()) {
             	StateNode node;
-        		node = states.Suck(head);
+        		node = states.Suck(head, queue.size()+1);
         		queue.add(node);
         	}
         	else {
         		if(envi.isObstacle(head)) {
                 	StateNode node;
                 	StateNode node2;
-                	node = states.Turn_Left(head);
-                	node2 = states.Turn_Right(head);
+                	node = states.Turn_Left(head, queue.size()+1);
         			queue.add(node);
+                	node2 = states.Turn_Right(head, queue.size()+1);
         			queue.add(node2);
             		//System.out.println("Obstacle");
             		//System.out.println(node.getOri().toString());
@@ -199,11 +199,12 @@ public class AgentRoomba implements Agent {
                 	StateNode node;
                 	StateNode node2;
                 	StateNode node3;
-                	node = states.Turn_Left(head);
-                	node2 = states.Turn_Right(head);
-                	node3 = states.Go(head);
+                	node = states.Turn_Left(head, queue.size()+1);
         			queue.add(node);
+                	node2 = states.Turn_Right(head, queue.size()+1);
         			queue.add(node2);
+                	node3 = states.Go(head, queue.size()+1);
+
         			queue.add(node3);
             		//System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
         			//if(node.getRoomba().y == 5) System.out.println(node.getRoomba().x + ", " + node.getRoomba().y);
